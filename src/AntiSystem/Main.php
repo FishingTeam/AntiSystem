@@ -116,6 +116,10 @@ class Main extends PluginBase implements Listener{
 			$this->config->set("AntiReachHackMass", 5);
 			$this->config->save();
 		}
+		if (!$this->config->exists("AntiSection")){
+			$this->config->set("AntiSection", "on");
+			$this->config->save();
+		}
 		if (!$this->config->exists("AntiSpam")){
 			$this->config->set("AntiSpam", "on");
 			$this->config->save();
@@ -149,6 +153,8 @@ class Main extends PluginBase implements Listener{
 		$this->ReachHack = $reach;
 		$reachmass = $this->config->get("AntiReachHackMass");
 		$this->ReachHackMass = $reachmass;
+		$section = $this->config->get("AntiSection");
+		$this->Section = $section;
 		$spam = $this->config->get("AntiSpam");
 		$this->Spam = $spam;
 		$spamtime = $this->config->get("AntiSpamTime");
@@ -237,7 +243,7 @@ class Main extends PluginBase implements Listener{
 		$this->chatmsg[$name] = "";
 
 		$steve = $this->Steve;
-		if($steve == "on"){
+		if($steve === "on"){
 			if($name === "steve"){
 			$event->setKickMessage("§c名前がSteveだとログインできません。\n§c名前を変えてきてください。");
 			$event->setCancelled();
@@ -440,7 +446,7 @@ class Main extends PluginBase implements Listener{
 	public function onEntitySpawn(EntitySpawnEvent $e){
 		$entity = $e->getEntity();
 		$tnt = $this->TNT;
-		if($tnt == "on"){
+		if($tnt === "on"){
 			if($entity instanceof PrimedTNT){
 				$entity->kill();
 				$this->getLogger()->info("§c>> TNTが発生しました。");
@@ -455,17 +461,26 @@ class Main extends PluginBase implements Listener{
 		$name = $player->getName();
 		$name2 = strtolower($player->getName());
 		$cmd = $event->getMessage();
+		$section = $this->Section;
 		$spam = $this->Spam;
 		$command = $this->Command;
 		if($command === "on" and $spam !== "on"){
-			if(substr($cmd,0,1) == "/" or substr($cmd,0,2) == "./"){
+			if(substr($cmd,0,1) === "/" or substr($cmd,0,2) === "./"){
 				$this->getLogger()->info("§a§o>> ".$user." が ".$cmd." を使用しました。");
 			}
 		}
-		if($spam === "on"){
+		if($section === "on"){
 			if(strpos($event->getMessage(),'§k') !== false){
 				$event->setCancelled();
 			}
+			if(strpos($event->getMessage(),'§l') !== false){
+				$event->setCancelled();
+			}
+			if(strpos($event->getMessage(),'§o') !== false){
+				$event->setCancelled();
+			}
+		}
+		if($spam === "on"){
 			if($cmd === $this->chatmsg[$name2]){
 				$event->setCancelled();
 			}
