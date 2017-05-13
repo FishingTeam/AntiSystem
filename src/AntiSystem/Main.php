@@ -132,6 +132,10 @@ class Main extends PluginBase implements Listener{
 			$this->config->set("AntiTNT", "on");
 			$this->config->save();
 		}
+		/*if (!$this->config->exists("LoginSystem")){
+			$this->config->set("LoginSystem", "on");
+			$this->config->save();
+		}*/
 		if (!$this->config->exists("Itemban")){
 			$this->config->set("Itemban", "on");
 			$this->config->save();
@@ -140,7 +144,6 @@ class Main extends PluginBase implements Listener{
 			$this->config->set("ShowCommand", "on");
 			$this->config->save();
 		}
-		
 		if (!$this->config->exists("SteveKick")){
 			$this->config->set("SteveKick", "on");
 			$this->config->save();
