@@ -79,7 +79,6 @@ use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\player\PlayerItemHeldEvent;
 use pocketmine\entity\Arrow;
 use pocketmine\network\protocol\PlayerActionPacket;
-
 use pocketmine\utils\UUID;
 use pocketmine\network\protocol\AddPlayerPacket;
 use pocketmine\network\protocol\PlayerListPacket;
@@ -88,14 +87,10 @@ class Main extends PluginBase implements Listener{
 
 	public function onEnable(){
 		$this->getServer()->getPluginManager()->registerEvents($this, $this);
-
 		$this->getLogger()->info("§a>> Pluginを読み込みました。");
 		$this->getLogger()->info("§b>> 不正な行為などを検出したらすぐに報告致します。");
-
-		if(!file_exists($this->getDataFolder())){
-			mkdir($this->getDataFolder(), 0744, true); 
-		}
-    		$this->getServer()->getScheduler()->scheduleRepeatingTask( new CallbackTask ( [$this,"S1"] ), 1 * 20);//spam, fly
+		$this->getServer()->getScheduler()->scheduleRepeatingTask( new CallbackTask ( [$this,"S1"] ), 1 * 20);//spam, fly
+		if(!file_exists($this->getDataFolder())){mkdir($this->getDataFolder(), 0744, true);}
 		$this->ban = new Config($this->getDataFolder() . "ban.json",  Config::JSON,array());
 		$this->player = new Config($this->getDataFolder() . "playerdata.json", Config::JSON, array());
 		$this->data = $this->player->getAll();
@@ -132,14 +127,14 @@ class Main extends PluginBase implements Listener{
 			$this->config->set("AntiTNT", "on");
 			$this->config->save();
 		}
-		/*if (!$this->config->exists("LoginSystem")){
-			$this->config->set("LoginSystem", "on");
-			$this->config->save();
-		}*/
 		if (!$this->config->exists("Itemban")){
 			$this->config->set("Itemban", "on");
 			$this->config->save();
 		}
+		/*if (!$this->config->exists("LoginSystem")){
+			$this->config->set("LoginSystem", "on");
+			$this->config->save();
+		}*/
 		if (!$this->config->exists("ShowCommand")){
 			$this->config->set("ShowCommand", "on");
 			$this->config->save();
@@ -166,6 +161,8 @@ class Main extends PluginBase implements Listener{
 		$this->TNT = $tnt;
 		$item = $this->config->get("Itemban");
 		$this->Item = $item;
+		/*$login = $this->config->get("LoginSystem");
+		$this->Login = $login;*/
 		$cmd = $this->config->get("ShowCommand");
 		$this->Command = $cmd;
 		$steve = $this->config->get("SteveKick");
@@ -228,7 +225,7 @@ class Main extends PluginBase implements Listener{
 				$reach = $this->ReachHack;
 				$reachmass = $this->ReachHackMass;
 				if ($reach === "on"){
-					if ($player->distance($pos) > $reachmass and $player->getGameMode() === 0){
+					if ($player->distance($pos) > $reachmass and ($player->getGameMode() === 0 or $player->getGameMode() === 2)){
 						//$player->kick("§cリーチが長すぎると判定されました。",false);
 						$event->setCancelled();
 					}
@@ -241,10 +238,8 @@ class Main extends PluginBase implements Listener{
 		$player = $event->getPlayer();
 		$name = strtolower($player->getName());
 		$nname = $player->getName();
-
 		$this->spamtime[$name] = 0;
 		$this->chatmsg[$name] = "";
-
 		$steve = $this->Steve;
 		if($steve === "on"){
 			if($name === "steve"){
