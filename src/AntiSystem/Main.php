@@ -95,24 +95,15 @@ class Main extends PluginBase implements Listener{
 		if(!file_exists($this->getDataFolder())){
 			mkdir($this->getDataFolder(), 0744, true); 
 		}
-    		$this->getServer()->getScheduler()->scheduleRepeatingTask( new CallbackTask ( [$this,"S1"] ), 60 * 20);//ASR
-    		$this->getServer()->getScheduler()->scheduleRepeatingTask( new CallbackTask ( [$this,"S2"] ), 1 * 20);//spam, fly
+    		$this->getServer()->getScheduler()->scheduleRepeatingTask( new CallbackTask ( [$this,"S1"] ), 1 * 20);//spam, fly
 		$this->ban = new Config($this->getDataFolder() . "ban.json",  Config::JSON,array());
 		$this->player = new Config($this->getDataFolder() . "playerdata.json", Config::JSON, array());
 		$this->data = $this->player->getAll();
 		$this->config = new Config($this->getDataFolder() . "config.json", Config::JSON, array());
-		if (!$this->config->exists("ServerRestart")){
-			$this->config->set("ServerRestart", "off");
-			$this->config->save();
-		}
-		if (!$this->config->exists("ServerRestartTime")){
-			$this->config->set("ServerRestartTime", 60);
-			$this->config->save();
-		}
-		if (!$this->config->exists("AntiAura")){
+		/*if (!$this->config->exists("AntiAura")){
 			$this->config->set("AntiAura", "on");
 			$this->config->save();
-		}
+		}*/
 		if (!$this->config->exists("AntiReachHack")){
 			$this->config->set("AntiReachHack", "on");
 			$this->config->save();
@@ -149,12 +140,8 @@ class Main extends PluginBase implements Listener{
 			$this->config->set("TNTLock", "on");
 			$this->config->save();
 		}
-		$asr = $this->config->get("ServerRestart");
-		$this->ASR = $asr;
-		$time = $this->config->get("ServerRestartTime");
-		$this->Time = $time + 1;
-		$aura = $this->config->get("AntiAura");
-		$this->Aura = $aura;
+		/*$aura = $this->config->get("AntiAura");
+		$this->Aura = $aura;*/
 		$reach = $this->config->get("AntiReachHack");
 		$this->ReachHack = $reach;
 		$reachmass = $this->config->get("AntiReachHackMass");
@@ -185,19 +172,6 @@ class Main extends PluginBase implements Listener{
 	}
 
 	public function S1(){
-		$asr = $this->ASR;
-		if($asr == "on"){
-			$this->Time--;
-			$time = $this->Time;
-			if($time == 0){
-				$this->getServer()->shutdown();
-			}else{
-				$this->getServer()->broadcastMessage("§b >> サーバの再起動まで §a".$time." 分");
-			}
-		}
-	}
-
-	public function S2(){
 		$spam = $this->Spam;
 		if($spam === "on"){
 			foreach($this->getServer()->getOnlinePlayers() as $player){
