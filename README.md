@@ -1,4 +1,7 @@
-# AntiSystem
+# AntiSystem of v1.0.0
+
+～説明～
+
 シンプルな荒らし対策プラグインです。
 
 ～機能～
@@ -41,3 +44,11 @@ ONにすると、Steveという名前でサーバに入ると、キックされ�
 
 ・/unsban:
 /sbanで実行したBANを解除することができます。
+
+～今後の追加予定～
+
+・AimAuraなどの対策
+
+・DeviceBanの追加
+
+・LoginSystemの追加
