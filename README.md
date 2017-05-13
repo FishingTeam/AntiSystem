@@ -3,40 +3,41 @@
 
 ～機能～
 
-・AntiReathHack
+・AntiReathHack:
 ONにすると、リーチ制限をかけられます。
 
-・AntiReathHackMass
+・AntiReathHackMass:
 リーチ制限を何マスにするかを設定できます。
 
-・AntiFly
+・AntiFly:
 ONにすると、フライハックらしきものを検出したらキックします。
 
-・AntiSection
+・AntiSection:
 ONにすると、セクションkとlとoを弾きます。
 
-・AntiSpam
+・AntiSpam:
 ONにすると、スパムを自動で対策します。
 
-・AntiSpamTime
+・AntiSpamTime:
 発言してから、何秒経ったら発言を許可するのかを設定します。
 
-・AntiTNT
+・AntiTNT:
 TNTが発生したら、自動で消去してくれます。
 
-・ItemBan
+・ItemBan:
 ONにすると、危険なアイテムは使用禁止にします。
 
-・ShowCommand
+・ShowCommand:
 ONにすると、コンソールにサーバーにいる人の使ったコマンドが、表示されるようになります。
 
-・SteveKick
+・SteveKick:
 ONにすると、Steveという名前でサーバに入ると、キックされるようにします。
 
 ～Commands～
-・/sban
+
+・/sban:
 このプラグイン独自のBANです。
 フルネームを入れなくてもBANすることができます。
 
-・/unsban
+・/unsban:
 /sbanで実行したBANを解除することができます。
