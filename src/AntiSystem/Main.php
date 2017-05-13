@@ -112,16 +112,16 @@ class Main extends PluginBase implements Listener{
 			$this->config->set("AntiReachHackMass", 5);
 			$this->config->save();
 		}
-		if (!$this->config->exists("CommandShow")){
-			$this->config->set("CommandShow", "on");
-			$this->config->save();
-		}
 		if (!$this->config->exists("FlyKick")){
 			$this->config->set("FlyKick", "on");
 			$this->config->save();
 		}
 		if (!$this->config->exists("Itemban")){
 			$this->config->set("Itemban", "on");
+			$this->config->save();
+		}
+		if (!$this->config->exists("ShowCommand")){
+			$this->config->set("ShowCommand", "on");
 			$this->config->save();
 		}
 		if (!$this->config->exists("Spam")){
@@ -146,7 +146,7 @@ class Main extends PluginBase implements Listener{
 		$this->ReachHack = $reach;
 		$reachmass = $this->config->get("AntiReachHackMass");
 		$this->ReachHackMass = $reachmass;
-		$cmd = $this->config->get("CommandShow");
+		$cmd = $this->config->get("ShowCommand");
 		$this->Command = $cmd;
 		$fly = $this->config->get("FlyKick");
 		$this->Fly = $fly;
@@ -185,9 +185,12 @@ class Main extends PluginBase implements Listener{
 				}
 				$name = $player->getName();
 				$name2 = strtolower($player->getName());
-				$st = $this->spamtime[$name2];
-				if($st > 0){
-					$this->spamtime[$name2]--;
+				$spam = $this->Spam;
+				if($spam === "on"){
+					$st = $this->spamtime[$name2];
+					if($st > 0){
+						$this->spamtime[$name2]--;
+					}
 				}
 			}
 		}
@@ -453,6 +456,11 @@ class Main extends PluginBase implements Listener{
 		$cmd = $event->getMessage();
 		$spam = $this->Spam;
 		$command = $this->Command;
+		if($command === "on" and $spam !== "on"){
+			if(substr($cmd,0,1) == "/" or substr($cmd,0,2) == "./"){
+				$this->getLogger()->info("§a§o>> ".$user." が ".$cmd." を使用しました。");
+			}
+		}
 		if($spam === "on"){
 			if(strpos($event->getMessage(),'§k') !== false){
 				$event->setCancelled();
@@ -466,7 +474,7 @@ class Main extends PluginBase implements Listener{
 				$this->chatmsg[$name2] = $cmd;
 				if($command === "on"){
 					if(substr($cmd,0,1) == "/" or substr($cmd,0,2) == "./"){
-						$this->getLogger()->info("§a§o ".$user." が ".$cmd." を使用しました。");
+						$this->getLogger()->info("§a§o>> ".$user." が ".$cmd." を使用しました。");
 					}
 				}
 			}
