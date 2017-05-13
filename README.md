@@ -47,8 +47,8 @@ ONにすると、Steveという名前でサーバに入ると、キックされ�
 
 ～今後の追加予定～
 
+・LoginSystemの追加 v1.0.1
+
+・DeviceBanの追加 v1.0.2
+
 ・AimAuraなどの対策
-
-・DeviceBanの追加
-
-・LoginSystemの追加
