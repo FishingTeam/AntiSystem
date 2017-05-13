@@ -90,7 +90,7 @@ class Main extends PluginBase implements Listener{
 		$this->getServer()->getPluginManager()->registerEvents($this, $this);
 
 		$this->getLogger()->info("§a>> Pluginを読み込みました。");
-		$this->getLogger()->info("§b>> 不正な行為などをを検出したらすぐに報告致します。");
+		$this->getLogger()->info("§b>> 不正な行為などを検出したらすぐに報告致します。");
 
 		if(!file_exists($this->getDataFolder())){
 			mkdir($this->getDataFolder(), 0744, true); 
@@ -104,6 +104,10 @@ class Main extends PluginBase implements Listener{
 			$this->config->set("AntiAura", "on");
 			$this->config->save();
 		}*/
+		if (!$this->config->exists("AntiFly")){
+			$this->config->set("AntiFly", "on");
+			$this->config->save();
+		}
 		if (!$this->config->exists("AntiReachHack")){
 			$this->config->set("AntiReachHack", "on");
 			$this->config->save();
@@ -112,8 +116,16 @@ class Main extends PluginBase implements Listener{
 			$this->config->set("AntiReachHackMass", 5);
 			$this->config->save();
 		}
-		if (!$this->config->exists("FlyKick")){
-			$this->config->set("FlyKick", "on");
+		if (!$this->config->exists("AntiSpam")){
+			$this->config->set("AntiSpam", "on");
+			$this->config->save();
+		}
+		if (!$this->config->exists("AntiSpamTime")){
+			$this->config->set("AntiSpamTime", 3);
+			$this->config->save();
+		}
+		if (!$this->config->exists("AntiTNT")){
+			$this->config->set("AntiTNT", "on");
 			$this->config->save();
 		}
 		if (!$this->config->exists("Itemban")){
@@ -124,42 +136,31 @@ class Main extends PluginBase implements Listener{
 			$this->config->set("ShowCommand", "on");
 			$this->config->save();
 		}
-		if (!$this->config->exists("Spam")){
-			$this->config->set("Spam", "on");
-			$this->config->save();
-		}
-		if (!$this->config->exists("SpamTime")){
-			$this->config->set("SpamTime", 3);
-			$this->config->save();
-		}
+		
 		if (!$this->config->exists("SteveKick")){
 			$this->config->set("SteveKick", "on");
 			$this->config->save();
 		}
-		if (!$this->config->exists("TNTLock")){
-			$this->config->set("TNTLock", "on");
-			$this->config->save();
-		}
 		/*$aura = $this->config->get("AntiAura");
 		$this->Aura = $aura;*/
+		$fly = $this->config->get("AntiFly");
+		$this->Fly = $fly;
 		$reach = $this->config->get("AntiReachHack");
 		$this->ReachHack = $reach;
 		$reachmass = $this->config->get("AntiReachHackMass");
 		$this->ReachHackMass = $reachmass;
-		$cmd = $this->config->get("ShowCommand");
-		$this->Command = $cmd;
-		$fly = $this->config->get("FlyKick");
-		$this->Fly = $fly;
+		$spam = $this->config->get("AntiSpam");
+		$this->Spam = $spam;
+		$spamtime = $this->config->get("AntiSpamTime");
+		$this->SpamTime = $spamtime;
+		$tnt = $this->config->get("AntiTNT");
+		$this->TNT = $tnt;
 		$item = $this->config->get("Itemban");
 		$this->Item = $item;
-		$spam = $this->config->get("Spam");
-		$this->Spam = $spam;
-		$spamtime = $this->config->get("SpamTime");
-		$this->SpamTime = $spamtime;
+		$cmd = $this->config->get("ShowCommand");
+		$this->Command = $cmd;
 		$steve = $this->config->get("SteveKick");
 		$this->Steve = $steve;
-		$tnt = $this->config->get("TNTLock");
-		$this->TNT = $tnt;
 	}
 
 	public function onDisable(){
@@ -277,15 +278,15 @@ class Main extends PluginBase implements Listener{
 			$host = "PrivateIP(".$ip.")";
 		}
 		if($this->ban->exists($name)){
-			$event->setKickMessage("You are Banned");
+			$event->setKickMessage("§cYou are Banned");
 			$event->setCancelled();
 		}
 		if($this->ban->exists($host)){
-			$event->setKickMessage("You are Banned");
+			$event->setKickMessage("§cYou are Banned");
 			$event->setCancelled();
 		}
 		if($this->ban->exists($rawuuid)){
-			$event->setKickMessage("You are Banned");
+			$event->setKickMessage("§cYou are Banned");
 			$event->setCancelled();
 		}
 	}
